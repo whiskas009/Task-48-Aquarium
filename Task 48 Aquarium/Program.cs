@@ -72,7 +72,7 @@ namespace Task_48_Aquarium
                         break;
 
                     case "2":
-                        DeleteFish(FindFish());
+                        DeleteFish();
                         break;
 
                     case "3":
@@ -90,10 +90,8 @@ namespace Task_48_Aquarium
             _fishes.Add(new Fish(random));
         } 
 
-        private int FindFish()
+        private void DeleteFish()
         {
-            int index = 0;
-
             if (_fishes.Count > 0)
             {
                 bool isWork = true;
@@ -101,10 +99,13 @@ namespace Task_48_Aquarium
                 while (isWork)
                 {
                     Console.WriteLine("Введите номер рыбки");
-                    bool isNumber = int.TryParse(Console.ReadLine(), out index);
+                    bool isNumber = int.TryParse(Console.ReadLine(), out int index);
 
                     if (isNumber == true && index - 1 < _fishes.Count && index > 0)
                     {
+                        _fishes.RemoveAt(index - 1);
+                        Console.WriteLine("Рыбка удалена!");
+                        Thread.Sleep(700);
                         isWork = false;
                     }
                     else
@@ -119,15 +120,6 @@ namespace Task_48_Aquarium
                 Console.WriteLine("В аквариуме нет рыб");
                 Thread.Sleep(700);
             }
-
-            return index;
-        }
-
-        private void DeleteFish(int index)
-        {
-            _fishes.RemoveAt(index - 1);
-            Console.WriteLine("Рыбка удалена!");
-            Thread.Sleep(700);
         }
 
         private void ShowInfo()
