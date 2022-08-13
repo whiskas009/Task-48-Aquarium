@@ -53,17 +53,17 @@ namespace Task_48_Aquarium
 
     class Aquarium
     {
-        private List<Fish> _pisces = new List<Fish>();
+        private List<Fish> _fishes = new List<Fish>();
         private Random _random = new Random();
 
         public void StartGame()
         {
             bool isWork = true;
 
-            while (isWork == true)
+            while (isWork)
             {
-                ApplyOneCycleLife();
                 ShowInfo();
+                ApplyOneCycleLife();
 
                 switch (Console.ReadLine())
                 {
@@ -72,7 +72,7 @@ namespace Task_48_Aquarium
                         break;
 
                     case "2":
-                        DeleteFish();
+                        FindFish();
                         break;
 
                     case "3":
@@ -80,8 +80,6 @@ namespace Task_48_Aquarium
                         break;
 
                     default:
-                        Console.WriteLine("\nНеккоректный ввод\n");
-                        Thread.Sleep(700);
                         break;
                 }
             }
@@ -89,25 +87,23 @@ namespace Task_48_Aquarium
 
         private void AddFish(Random random)
         {
-            _pisces.Add(new Fish(random));
+            _fishes.Add(new Fish(random));
         }
 
-        private void DeleteFish()
+        private void FindFish()
         {
-            if (_pisces.Count > 0)
+            if (_fishes.Count > 0)
             {
                 bool isWork = true;
 
-                while (isWork == true)
+                while (isWork)
                 {
                     Console.WriteLine("Введите номер рыбки");
                     bool isNumber = int.TryParse(Console.ReadLine(), out int index);
 
-                    if (isNumber == true && index - 1 < _pisces.Count && index > 0)
+                    if (isNumber == true && index - 1 < _fishes.Count && index > 0)
                     {
-                        _pisces.RemoveAt(index - 1);
-                        Console.WriteLine("Рыбка удалена!");
-                        Thread.Sleep(700);
+                        DeleteFish(index);
                         isWork = false;
                     }
                     else
@@ -124,17 +120,24 @@ namespace Task_48_Aquarium
             }
         }
 
+        private void DeleteFish(int index)
+        {
+            _fishes.RemoveAt(index - 1);
+            Console.WriteLine("Рыбка удалена!");
+            Thread.Sleep(700);
+        }
+
         private void ShowInfo()
         {
             Console.Clear();
             Console.WriteLine("Ваш аквариум: ");
 
-            if (_pisces.Count > 0)
+            if (_fishes.Count > 0)
             {
-                for (int i = 0; i < _pisces.Count; i++)
+                for (int i = 0; i < _fishes.Count; i++)
                 {
                     Console.Write($"{i + 1}. ");
-                    _pisces[i].ShowInfo();
+                    _fishes[i].ShowInfo();
                 }
             }
             else
@@ -147,12 +150,12 @@ namespace Task_48_Aquarium
 
         private void ApplyOneCycleLife()
         {
-            for (int i = 0; i < _pisces.Count; i++)
+            for (int i = 0; i < _fishes.Count; i++)
             {
-                _pisces[i].ReduceLife();
-                if (_pisces[i].Health <= 0)
+                _fishes[i].ReduceLife();
+                if (_fishes[i].Health <= 0)
                 {
-                    _pisces.RemoveAt(i);
+                    _fishes.RemoveAt(i);
                 }
             }
         }
