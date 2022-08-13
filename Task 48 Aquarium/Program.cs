@@ -72,7 +72,7 @@ namespace Task_48_Aquarium
                         break;
 
                     case "2":
-                        FindFish();
+                        DeleteFish(FindFish());
                         break;
 
                     case "3":
@@ -88,10 +88,12 @@ namespace Task_48_Aquarium
         private void AddFish(Random random)
         {
             _fishes.Add(new Fish(random));
-        }
+        } 
 
-        private void FindFish()
+        private int FindFish()
         {
+            int index = 0;
+
             if (_fishes.Count > 0)
             {
                 bool isWork = true;
@@ -99,11 +101,10 @@ namespace Task_48_Aquarium
                 while (isWork)
                 {
                     Console.WriteLine("Введите номер рыбки");
-                    bool isNumber = int.TryParse(Console.ReadLine(), out int index);
+                    bool isNumber = int.TryParse(Console.ReadLine(), out index);
 
                     if (isNumber == true && index - 1 < _fishes.Count && index > 0)
                     {
-                        DeleteFish(index);
                         isWork = false;
                     }
                     else
@@ -118,6 +119,8 @@ namespace Task_48_Aquarium
                 Console.WriteLine("В аквариуме нет рыб");
                 Thread.Sleep(700);
             }
+
+            return index;
         }
 
         private void DeleteFish(int index)
@@ -150,12 +153,26 @@ namespace Task_48_Aquarium
 
         private void ApplyOneCycleLife()
         {
+            AgeAllFishes();
+            DelteDeadFishes();
+        }
+
+        private void AgeAllFishes()
+        {
             for (int i = 0; i < _fishes.Count; i++)
             {
                 _fishes[i].ReduceLife();
+            }
+        }
+
+        private void DelteDeadFishes()
+        {
+            for (int i = 0; i < _fishes.Count; i++)
+            {
                 if (_fishes[i].Health <= 0)
                 {
                     _fishes.RemoveAt(i);
+                    i--;
                 }
             }
         }
